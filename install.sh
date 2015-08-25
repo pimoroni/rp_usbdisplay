@@ -25,7 +25,7 @@ if uname -a | grep -q 4.1.6; then
 
   if [ -d "/lib/modules/4.1.6-v7+" ]; then
     echo "Installing Pi 2 support"
-    sudo cp 4.1.6-v7+/rp_usbdisplay.ko /lib/modules/4.1.6-v7/kernel/drivers/video/
+    sudo cp 4.1.6-v7+/rp_usbdisplay.ko /lib/modules/4.1.6-v7+/kernel/drivers/video/
   fi
 
   sudo depmod
@@ -33,10 +33,12 @@ if uname -a | grep -q 4.1.6; then
   echo "Starting driver..."
   sudo modprobe rp_usbdisplay
   sleep 0.5
-  if [ -d "/dev/fb1" ]; then
+  if [ -c "/dev/fb1" ]; then
     success "Install Successful!"
     echo "You should see the screen fill with noise."
     cat /dev/urandom > /dev/fb1
+    sleep 1
+    cat /dev/zero > /dev/fb1
   fi
 else
   echo "Kernel 4.1.6 required"
