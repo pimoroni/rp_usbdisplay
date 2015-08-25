@@ -28,6 +28,7 @@ if uname -a | grep -q 4.1.6; then
     sudo cp 4.1.6-v7+/rp_usbdisplay.ko /lib/modules/4.1.6-v7+/kernel/drivers/video/
   fi
 
+  echo "Updating module dependencies..."
   sudo depmod
 
   echo "Starting driver..."
@@ -37,8 +38,11 @@ if uname -a | grep -q 4.1.6; then
     success "Install Successful!"
     echo "You should see the screen fill with noise."
     cat /dev/urandom > /dev/fb1
-    sleep 1
+    sleep 2
     cat /dev/zero > /dev/fb1
+    success "Enjoy!"
+  else
+    warning "No /dev/fb1 found, did something go wrong?"
   fi
 else
   echo "Kernel 4.1.6 required"
