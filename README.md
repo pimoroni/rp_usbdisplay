@@ -2,6 +2,16 @@
 
 This binary driver is for Raspbian running Kernel 4.1.6 ( check with `uname -a` )
 
+You should see something like "Linux raspberrypi 4.1.6+"
+
+If not, make sure you're up to date:
+
+```bash
+sudo apt-get update
+sudo apt-get upgrade
+sudo reboot
+```
+
 ## Installing
 
 ```bash
