@@ -36,10 +36,12 @@ if uname -a | grep -q 4.1.6; then
   sleep 0.5
   if [ -c "/dev/fb1" ]; then
     success "Install Successful!"
+    FB=`cat /proc/fb | grep rpusbdisp-fb | awk -F' ' '{print $1}'`
+    success "RoboPeak USB Display found at /dev/fb$FB"
     echo "You should see the screen fill with noise."
-    cat /dev/urandom > /dev/fb1
-    sleep 2
-    cat /dev/zero > /dev/fb1
+    cat /dev/urandom > /dev/fb$FB
+    sleep 3
+    cat /dev/zero > /dev/fb$FB
     success "Enjoy!"
   else
     warning "No /dev/fb1 found, did something go wrong?"
