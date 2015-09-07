@@ -20,6 +20,12 @@ cd rp_usbdisplay
 ./install.sh
 ```
 
+Unless you're okay with starting it up manuall ( `sudo modprobe rp_usbdisplay` ) You'll also have to make sure that rp_usbdisplay starts automatically by editing `/etc/modules` and adding the line:
+
+```bash
+rp_usbdisplay
+```
+
 ## Manually
 
 Clone this repo.
@@ -34,3 +40,7 @@ Then `modprobe rp_usbdisplay`
 Your USB display is now installed and should appear as `/dev/fb1`
 
 The display should go black. Test with: `cat /dev/urandom > /dev/fb1`
+
+## Boot X Desktop On USB Display
+
+Although you'll get little use out of your desktop on the USB display, we've included the configuration file which will get it running. See [/extra](/extra) for more information.
