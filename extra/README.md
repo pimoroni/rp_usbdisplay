@@ -6,6 +6,12 @@ This is a basic configuration file which sets the USB display as the default X d
 
 Copy into /usr/share/X11/xorg.conf.d/
 
+## 10-dualdisplay.conf
+
+This configuration uses /dev/fb0 and /dev/fb0 as two displays, creating a separate desktop for each of them.
+
+If you're using the official Raspberry Pi 7" Touch Screen you can use the `rpi-dfrobot-touch.sh` script to change the touch settings so that each screen works independently with its own touch input. Note: You can't touch them both at the same time!
+
 # Command-Line/Console To USB Display
 
 To get the Pi console output onto the USB display, you should edit `/boot/cmdline.txt`;
