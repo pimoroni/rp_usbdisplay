@@ -44,6 +44,13 @@ is plugged in.
 
 EOF
 
+if lsusb | grep -q fccf:a001; then
+    success "USB display detected."
+else
+    warning "USB display not detected, did you plug it in?"
+fi
+echo ""
+
 if ! confirm "Continue installing?"; then
     exit
 fi
