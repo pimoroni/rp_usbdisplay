@@ -102,15 +102,19 @@ if [ $RUNNING -eq 1 ]; then
 
         FB=`cat /proc/fb | grep rpusbdisp-fb | awk -F' ' '{print $1}'`
     
-        success "RoboPeak USB Display found at /dev/fb$FB"
+        success "RoboPeak USB Display framebuffer found at /dev/fb$FB"
         echo ""
     
-        echo "You should see the screen fill with noise and then clear."    
-        echo ""
-        head -c 153600 /dev/urandom > /dev/fb$FB
-        sleep 3
-        head -c 153600 /dev/zero > /dev/fb$FB
-   
+        if lsusb | grep -q fccf:a001; then
+
+            echo "Display detected. Testing..."    
+            echo ""
+            zcat shoplogo.fb.gz > /dev/fb$FB
+            sleep 3
+            dd if=/dev/zero of=/dev/fb1 bs=153600 count=1 > /dev/null
+
+        fi
+
         success "Install finished. Enjoy!"
         echo ""
 
