@@ -16,6 +16,16 @@ if [[ "" == $IS_RASPBIAN ]]; then
   exit 1;
 fi
 
+if cat /etc/os-release | grep -q jessie; then
+    echo "Raspbian Jesise not yet supported."
+    exit
+fi
+
+if uname -a | grep -q 4.1.7; then
+    echo "Kernel 4.1.7 not yet supported."
+    exit
+fi
+
 if uname -a | grep -q 4.1.6; then
 
   if [ -d "/lib/modules/4.1.6+" ]; then
