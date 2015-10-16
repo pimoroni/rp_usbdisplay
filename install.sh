@@ -1,62 +1,121 @@
 #!/bin/bash
 
 success () {
-  echo "$(tput setaf 2)$1$(tput sgr0)"
+    echo "$(tput setaf 2)$1$(tput sgr0)"
 }
 
 warning () {
-  echo "$(tput setaf 1)$1$(tput sgr0)"
+    echo "$(tput setaf 3)$1$(tput sgr0)"
+}
+
+error () {
+    echo "$(tput setaf 1)$1$(tput sgr0)"
+}
+
+confirm () {
+    read -r -p "$1 [y/N] " response < /dev/tty
+    response=${response,,}
+    if [[ $response =~ ^(yes|y)$ ]]; then
+        true
+    else
+        false
+    fi
 }
 
 IS_RASPBIAN=`cat /etc/*-release | grep Raspbian`
 
 if [[ "" == $IS_RASPBIAN ]]; then
-  warning "Warning!"
-  echo "Please only run this script on Raspbian on your Raspberry Pi"
-  exit 1;
+    warning "Warning!"
+    echo "Please only run this script on Raspbian on your Raspberry Pi"
+    exit 1;
 fi
 
-if cat /etc/os-release | grep -q jessie; then
-    echo "Raspbian Jesise not yet supported."
+
+cat << EOF
+
+Easy Robopeak/DFRobot USB Display Installer v2.0
+Written and maintained by Phil @Gadgetoid Howard
+
+Support & Issues: https://github.com/pimoroni/rp_usbdisplay
+
+For best results, please make sure you're running
+a supported kernel and that your RFRobot USB display
+is plugged in.
+
+EOF
+
+if ! confirm "Continue installing?"; then
     exit
 fi
 
-if uname -a | grep -q 4.1.7; then
-    echo "Kernel 4.1.7 not yet supported."
-    exit
-fi
+echo ""
 
-if uname -a | grep -q 4.1.6; then
+RUNNING=0
 
-  if [ -d "/lib/modules/4.1.6+" ]; then
-    echo "Installing A/B/B+ support"
-    sudo cp 4.1.6+/rp_usbdisplay.ko /lib/modules/4.1.6+/kernel/drivers/video/
-  fi
+DRIVERS=`find drivers/* -type d | cut -d'/' -f2`
 
-  if [ -d "/lib/modules/4.1.6-v7+" ]; then
-    echo "Installing Pi 2 support"
-    sudo cp 4.1.6-v7+/rp_usbdisplay.ko /lib/modules/4.1.6-v7+/kernel/drivers/video/
-  fi
+while read filename; do
 
-  echo "Updating module dependencies..."
-  sudo depmod
+    echo "Checking for $filename"
 
-  echo "Starting driver..."
-  sudo modprobe rp_usbdisplay
-  sleep 0.5
-  if [ -c "/dev/fb1" ]; then
-    success "Install Successful!"
-    FB=`cat /proc/fb | grep rpusbdisp-fb | awk -F' ' '{print $1}'`
-    success "RoboPeak USB Display found at /dev/fb$FB"
-    echo "You should see the screen fill with noise."
-    cat /dev/urandom > /dev/fb$FB
-    sleep 3
-    cat /dev/zero > /dev/fb$FB
-    success "Enjoy!"
-  else
-    warning "No /dev/fb1 found, did something go wrong?"
-  fi
+    if uname -a | grep -q $filename; then
+
+        success "Detected running kernel $filename"
+        RUNNING=1
+
+    fi
+
+    if [ -d "/lib/modules/$filename" ]; then
+
+        warning "Installing driver into /lib/modules/$filename"
+        sudo cp drivers/$filename/rp_usbdisplay.ko /lib/modules/$filename/kernel/drivers/video/
+
+    fi
+    echo ""
+
+done <<<"$DRIVERS"
+
+if [ $RUNNING -eq 1 ]; then
+  
+    echo "Updating module dependencies..."
+    sudo depmod
+    echo ""
+  
+    echo "Starting driver..."
+    sudo modprobe rp_usbdisplay
+    sleep 0.5
+    echo ""
+
+    echo "Checking for framebuffer..."
+    echo ""
+
+    if cat /proc/fb | grep -q rpusbdisp-fb; then
+
+        success "Install Successful!"
+
+        FB=`cat /proc/fb | grep rpusbdisp-fb | awk -F' ' '{print $1}'`
+    
+        success "RoboPeak USB Display found at /dev/fb$FB"
+        echo ""
+    
+        echo "You should see the screen fill with noise and then clear."    
+        echo ""
+        head -c 153600 /dev/urandom > /dev/fb$FB
+        sleep 3
+        head -c 153600 /dev/zero > /dev/fb$FB
+   
+        success "Install finished. Enjoy!"
+        echo ""
+
+    else
+
+        warning "No RPUSBDisp framebuffer found, did something go wrong?"
+
+    fi
+
 else
-  echo "Kernel 4.1.6 required"
-  echo "Please apt-get update && apt-get upgrade"
+
+    warning "Sorry. Current running kernel is not supported."
+    uname -a
+
 fi
