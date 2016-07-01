@@ -1,10 +1,10 @@
 # RoboPeak/DFRobot 2.8" USB TFT Driver
 
-This binary driver is for Raspbian running Kernel 4.1.6 ( check with `uname -a` )
+This is an unmodified compiled, packaged, easy-to-install distribution of the official RoboPeak Mini Display Display driver. It's intended to run on Raspbian Jessie or Wheezy on the Raspberry Pi, and has been compiled for various different kernel versions.
 
-You should see something like "Linux raspberrypi 4.1.6+"
+You can find the original source code, and raise issues at https://github.com/robopeak/rpusbdisp
 
-If not, make sure you're up to date:
+Before installing, make sure you're up to date:
 
 ```bash
 sudo apt-get update
@@ -20,7 +20,7 @@ cd rp_usbdisplay
 ./install.sh
 ```
 
-Unless you're okay with starting it up manuall ( `sudo modprobe rp_usbdisplay` ) You'll also have to make sure that rp_usbdisplay starts automatically by editing `/etc/modules` and adding the line:
+Unless you're okay with starting it up manually ( `sudo modprobe rp_usbdisplay` ) You'll also have to make sure that rp_usbdisplay starts automatically by editing `/etc/modules` and adding the line:
 
 ```bash
 rp_usbdisplay
@@ -30,8 +30,10 @@ rp_usbdisplay
 
 Clone this repo.
 
-Copy 4.1.6+/rp_usbdisplay.ko to /lib/modules/4.1.6+/kernel/drivers/video/
-Copy 4.1.6-v7+/rp_usbdisplay.ko to /lib/modules/4.1.6-v7+/kernel/drivers/video/
+Where `<kernel_version>` is the version of your kernel returned by `uname -a`
+
+Copy `drivers/<kernel_version>/rp_usbdisplay.ko` to `/lib/modules/<kernel_version>/kernel/drivers/video/`
+Copy `drivers/<kernel_version>-v7+/rp_usbdisplay.ko` to `/lib/modules/<kernel_version>/kernel/drivers/video/`
 
 Run `sudo depmod`
 
