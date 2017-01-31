@@ -111,10 +111,15 @@ if [ $RUNNING -eq 1 ]; then
             echo ""
             zcat shoplogo.fb.gz > /dev/fb$FB
             sleep 3
-            dd if=/dev/zero of=/dev/fb1 bs=153600 count=1 > /dev/null
+            dd if=/dev/zero of=/dev/fb$FB bs=153600 count=1 > /dev/null
 
         fi
 
+        # echo "To start it on boot, don't forget to edit /etc/modules"
+        echo "Adding to /etc/modules..."
+        sudo bash -c "echo rp_usbdisplay >> /etc/modules"
+        echo "Added"
+        
         success "Install finished. Enjoy!"
         echo ""
 
