@@ -33,7 +33,7 @@ Clone this repo.
 Where `<kernel_version>` is the version of your kernel returned by `uname -a`
 
 Copy `drivers/<kernel_version>/rp_usbdisplay.ko` to `/lib/modules/<kernel_version>/kernel/drivers/video/`
-Copy `drivers/<kernel_version>-v7+/rp_usbdisplay.ko` to `/lib/modules/<kernel_version>/kernel/drivers/video/`
+Copy `drivers/<kernel_version>-v7+/rp_usbdisplay.ko` to `/lib/modules/<kernel_version>-v7+/kernel/drivers/video/`
 
 Run `sudo depmod`
 
