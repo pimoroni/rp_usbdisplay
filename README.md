@@ -26,6 +26,13 @@ Unless you're okay with starting it up manually ( `sudo modprobe rp_usbdisplay` 
 rp_usbdisplay
 ```
 
+### Incompatible Kernel (if install.sh fails)
+There are some kernels supported but maybe you don't have a supported version. A quick way to solve that is to check for the latest supported kernel under the drivers directory and find it in the rpi-firmware Github repo (https://github.com/Hexxeh/rpi-firmware). For example you can install the supported kernel 4.4.9 by running the following command
+```#run ONLY if installing can't proceed because no supported kernel is used
+sudo rpi-update 4ce3f4a00648faaa73c7e7d41ff09be83a25bc0a
+sudo reboot
+```
+
 ## Manually
 
 Clone this repo.
