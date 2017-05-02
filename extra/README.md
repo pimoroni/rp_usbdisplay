@@ -6,7 +6,7 @@ This is a basic configuration file which sets the USB display as the default X d
 
 Copy the configuration into `/usr/share/X11/xorg.conf.d/`
 
-`sudo cp extra/10-robopeak.conf /usr/share/X11/xorg.conf.d/10-robopeak.conf`
+`sudo cp ./extra/10-robopeak.conf /usr/share/X11/xorg.conf.d/`
 
 ## 10-dualdisplay.conf
 
