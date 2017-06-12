@@ -1,1 +1,0 @@
-cmd_/home/pi/rpusbdisp/rp_usbdisplay-1.0/src/rp_usbdisplay.ko := ld -EL -r  -T ./scripts/module-common.lds --build-id  -o /home/pi/rpusbdisp/rp_usbdisplay-1.0/src/rp_usbdisplay.ko /home/pi/rpusbdisp/rp_usbdisplay-1.0/src/rp_usbdisplay.o /home/pi/rpusbdisp/rp_usbdisplay-1.0/src/rp_usbdisplay.mod.o ;  true
