@@ -133,5 +133,6 @@ else
 
     warning "Sorry. Current running kernel is not supported."
     uname -a
+    warning "Please see: https://github.com/pimoroni/rp_usbdisplay/tree/master/dkms"
 
 fi
