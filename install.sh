@@ -131,8 +131,8 @@ if [ $RUNNING -eq 1 ]; then
 
 else
 
-    warning "Sorry. Current running kernel is not supported."
+    warning "Sorry. Current running kernel is not supported and binary builds are no longer maintained."
     uname -a
-    warning "Please see: https://github.com/pimoroni/rp_usbdisplay/tree/master/dkms"
+    warning "Please use the DKMS package instead: https://github.com/pimoroni/rp_usbdisplay/tree/master/dkms"
 
 fi
